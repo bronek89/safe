@@ -4,14 +4,14 @@ namespace tests\GW\Safe;
 
 use GW\Safe\SafeAssocArray;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function random_int;
-use function uniqid;
 
 class SafeIntTest extends TestCase
 {
-    /** @dataProvider possibleIntegerValues */
+    #[DataProvider('possibleIntegerValues')]
     function test_casting_possible_int_values($value, int $expected)
     {
         self::assertEquals($expected, SafeAssocArray::from(['int' => $value])->int('int'));
@@ -20,21 +20,21 @@ class SafeIntTest extends TestCase
         self::assertEquals($expected, SafeAssocArray::from(['int' => $value])->intOrDefault('int', random_int(0, 99)));
     }
 
-    /** @dataProvider impossibleIntegerValues */
+    #[DataProvider('impossibleIntegerValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int($notInt)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notInt])->int('value');
     }
 
-    /** @dataProvider impossibleIntegerValues */
+    #[DataProvider('impossibleIntegerValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int_nullable($notInt)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notInt])->intNullable('value');
     }
 
-    /** @dataProvider impossibleIntegerValues */
+    #[DataProvider('impossibleIntegerValues')]
     function test_intOrNull_returns_null_on_value_that_cannot_be_int($notInt)
     {
         self::assertNull(SafeAssocArray::from(['value' => $notInt])->intOrNull('value'));
@@ -46,7 +46,7 @@ class SafeIntTest extends TestCase
         SafeAssocArray::from(['value' => null])->int('value');
     }
 
-    /** @dataProvider impossibleIntegerValues */
+    #[DataProvider('impossibleIntegerValues')]
     function test_returning_default_when_value_is_not_numeric($notInt)
     {
         $safe = SafeAssocArray::from(['value' => $notInt]);
@@ -113,7 +113,7 @@ class SafeIntTest extends TestCase
         self::assertEquals([123, 42, 456, 42], $safe->intsForced('ints', 42));
     }
 
-    public function possibleIntegerValues(): array
+    public static function possibleIntegerValues(): array
     {
         return [
             [123, 123],
@@ -124,7 +124,7 @@ class SafeIntTest extends TestCase
         ];
     }
 
-    public function impossibleIntegerValues(): array
+    public static function impossibleIntegerValues(): array
     {
         return [
             [['array']],

@@ -77,6 +77,21 @@ final class SafeRequest
      */
     public function value(string $key, $default)
     {
-        return $this->request->get($key, $default);
+        $attributes = $this->request->attributes;
+        if ($attributes->has($key)) {
+            return $attributes->all()[$key];
+        }
+
+        $query = $this->request->query;
+        if ($query->has($key)) {
+            return $query->all()[$key];
+        }
+
+        $post = $this->request->request;
+        if ($post->has($key)) {
+            return $post->all()[$key];
+        }
+
+        return $default;
     }
 }

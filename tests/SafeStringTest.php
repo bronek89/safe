@@ -4,6 +4,7 @@ namespace tests\GW\Safe;
 
 use GW\Safe\SafeAssocArray;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function tmpfile;
@@ -11,7 +12,7 @@ use function uniqid;
 
 class SafeStringTest extends TestCase
 {
-    /** @dataProvider possibleStringValues */
+    #[DataProvider('possibleStringValues')]
     function test_casts_possible_string_values($value, string $expected)
     {
         self::assertEquals($expected, SafeAssocArray::from(['string' => $value])->string('string'));
@@ -20,21 +21,21 @@ class SafeStringTest extends TestCase
         self::assertEquals($expected, SafeAssocArray::from(['string' => $value])->stringOrDefault('string', uniqid()));
     }
 
-    /** @dataProvider impossibleStringValues */
+    #[DataProvider('impossibleStringValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_string($notString)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notString])->string('value');
     }
 
-    /** @dataProvider impossibleStringValues */
+    #[DataProvider('impossibleStringValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_stringNullable($notString)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notString])->stringNullable('value');
     }
 
-    /** @dataProvider impossibleStringValues */
+    #[DataProvider('impossibleStringValues')]
     function test_stringOrNull_returns_null_on_value_that_cannot_be_string($notString)
     {
         self::assertNull(SafeAssocArray::from(['value' => $notString])->stringOrNull('value'));
@@ -46,7 +47,7 @@ class SafeStringTest extends TestCase
         SafeAssocArray::from(['value' => null])->string('value');
     }
 
-    /** @dataProvider impossibleStringValues */
+    #[DataProvider('impossibleStringValues')]
     function test_returning_default_when_value_is_not_string_like($notString)
     {
         $safe = SafeAssocArray::from(['value' => $notString]);
@@ -121,7 +122,7 @@ class SafeStringTest extends TestCase
         );
     }
 
-    public function possibleStringValues(): array
+    public static function possibleStringValues(): array
     {
         return [
             ['string', 'string'],
@@ -133,7 +134,7 @@ class SafeStringTest extends TestCase
         ];
     }
 
-    public function impossibleStringValues(): array
+    public static function impossibleStringValues(): array
     {
         return [
             [['array']],
