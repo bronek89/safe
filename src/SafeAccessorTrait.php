@@ -209,7 +209,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return int[]
+     * @return float[]
      */
     public function floatsForced(string $key, float $default = 0): array
     {

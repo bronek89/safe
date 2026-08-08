@@ -21,7 +21,7 @@ class SafeAssocListTest extends TestCase
 	{
 		$arrayList = SafeAssocList::fromArray([['name' => 'John'], ['name' => 'Mary']])->toArray();
 
-		self::assertContainsOnly(SafeAssocArray::class, $arrayList);
+		self::assertContainsOnlyInstancesOf(SafeAssocArray::class, $arrayList);
 		self::assertEquals('John', $arrayList[0]->string('name'));
 		self::assertEquals('Mary', $arrayList[1]->string('name'));
 		self::assertEquals('???', $arrayList[1]->string('age', '???'));

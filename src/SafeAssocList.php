@@ -54,7 +54,6 @@ final class SafeAssocList implements Countable
 
 	/**
 	 * @phpstan-param callable(SafeAssocArray):bool $filter
-	 * @phpstan-return T[]
 	 */
 	public function filter(callable $filter): self
 	{
