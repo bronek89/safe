@@ -19,12 +19,12 @@ interface SafeAccessor
     public function floatNullable(string $key, ?float $default = null): ?float;
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function strings(string $key): array;
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     public function ints(string $key): array;
 }

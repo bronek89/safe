@@ -73,6 +73,14 @@ class SafeIntTest extends TestCase
         );
     }
 
+    function test_casting_associative_array_discards_keys(): void
+    {
+        self::assertSame(
+            [123, 456],
+            SafeAssocArray::from(['ints' => ['a' => '123', 'b' => '456']])->ints('ints')
+        );
+    }
+
     function test_throws_InvalidArgumentException_when_cannot_cast_array_of_ints(): void
     {
         $this->expectException(InvalidArgumentException::class);

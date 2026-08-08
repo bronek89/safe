@@ -145,7 +145,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function strings(string $key): array
     {
@@ -153,7 +153,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function stringsFiltered(string $key): array
     {
@@ -161,7 +161,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function stringsForced(string $key, string $default = ''): array
     {
@@ -169,7 +169,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     public function ints(string $key): array
     {
@@ -177,7 +177,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     public function intsFiltered(string $key): array
     {
@@ -185,7 +185,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     public function intsForced(string $key, int $default = 0): array
     {
@@ -193,7 +193,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return float[]
+     * @return list<float>
      */
     public function floats(string $key): array
     {
@@ -201,7 +201,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return float[]
+     * @return list<float>
      */
     public function floatsFiltered(string $key): array
     {
@@ -209,7 +209,7 @@ trait SafeAccessorTrait
     }
 
     /**
-     * @return float[]
+     * @return list<float>
      */
     public function floatsForced(string $key, float $default = 0): array
     {
@@ -242,9 +242,9 @@ trait SafeAccessorTrait
      * @template TOut
      * @phpstan-param string $key
      * @phpstan-param callable(mixed):TOut $utilCaster
-     * @phpstan-return TOut[]
+     * @phpstan-return list<TOut>
      */
-	private function arrayCast(string $key, string $type, callable $utilCaster)
+	private function arrayCast(string $key, string $type, callable $utilCaster): array
     {
         $value = $this->value($key, null) ?? [];
 
@@ -253,7 +253,7 @@ trait SafeAccessorTrait
         }
 
         try {
-            return array_map($utilCaster, $value);
+            return array_values(array_map($utilCaster, $value));
         } catch (InvalidTypeException $utilError) {
             throw new InvalidArgumentException("Value of {$key} contains items that cannot be {$type}", 0, $utilError);
         }
@@ -264,7 +264,7 @@ trait SafeAccessorTrait
      * @phpstan-param string $key
      * @phpstan-param callable(mixed):bool $filter
      * @phpstan-param callable(mixed):TOut $caster
-     * @phpstan-return TOut[]
+     * @phpstan-return list<TOut>
      */
 	private function arrayCastFiltered(string $key, callable $filter, callable $caster): array
     {
