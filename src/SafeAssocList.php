@@ -11,12 +11,14 @@ use function is_array;
 
 final class SafeAssocList implements Countable
 {
-	/** @var SafeAssocArray[] */
+	/** @var list<SafeAssocArray> */
 	private array $items;
 
 	private function __construct(SafeAssocArray ...$items)
 	{
-		$this->items = $items;
+		// spreading a string-keyed array passes named arguments, which land in
+		// the variadic keyed by name
+		$this->items = array_values($items);
 	}
 
 	public static function from(SafeAssocArray ...$items): self
@@ -32,10 +34,15 @@ final class SafeAssocList implements Countable
 		);
 	}
 
-	/** @return SafeAssocArray[] */
+	/** @return list<SafeAssocArray> */
 	public function toArray(): array
 	{
 		return $this->items;
+	}
+
+	public function first(): ?SafeAssocArray
+	{
+		return $this->items[0] ?? null;
 	}
 
 	public function count(): int
@@ -46,7 +53,7 @@ final class SafeAssocList implements Countable
 	/**
 	 * @template T
 	 * @phpstan-param callable(SafeAssocArray):T $map
-	 * @phpstan-return T[]
+	 * @phpstan-return list<T>
 	 */
 	public function map(callable $map): array
 	{
