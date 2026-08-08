@@ -4,6 +4,7 @@ namespace tests\GW\Safe;
 
 use GW\Safe\SafeAssocArray;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function random_int;
@@ -11,7 +12,7 @@ use const M_PI;
 
 class SafeFloatTest extends TestCase
 {
-    /** @dataProvider possibleFloatValues */
+    #[DataProvider('possibleFloatValues')]
     function test_casting_possible_float_values($value, float $expected)
     {
         self::assertEquals($expected, SafeAssocArray::from(['float' => $value])->float('float'));
@@ -20,21 +21,21 @@ class SafeFloatTest extends TestCase
         self::assertEquals($expected, SafeAssocArray::from(['float' => $value])->floatOrDefault('float', M_PI));
     }
 
-    /** @dataProvider impossibleFloatValues */
+    #[DataProvider('impossibleFloatValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_float($notFloat)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notFloat])->float('value');
     }
 
-    /** @dataProvider impossibleFloatValues */
+    #[DataProvider('impossibleFloatValues')]
     function test_throwing_InvalidArgumentException_on_value_that_cannot_be_float_nullable($notFloat)
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notFloat])->floatNullable('value');
     }
 
-    /** @dataProvider impossibleFloatValues */
+    #[DataProvider('impossibleFloatValues')]
     function test_floatOrNull_returns_null_on_value_that_cannot_be_number($notFloat)
     {
         self::assertNull(SafeAssocArray::from(['value' => $notFloat])->floatOrNull('value'));
@@ -46,7 +47,7 @@ class SafeFloatTest extends TestCase
         SafeAssocArray::from(['value' => null])->float('value');
     }
 
-    /** @dataProvider impossibleFloatValues */
+    #[DataProvider('impossibleFloatValues')]
     function test_returning_default_when_value_is_not_numeric($notFloat)
     {
         $safe = SafeAssocArray::from(['value' => $notFloat]);
@@ -113,7 +114,7 @@ class SafeFloatTest extends TestCase
         self::assertEquals([123.99, 42.42, 456.99, 42.42], $safe->floatsForced('floats', 42.42));
     }
 
-    public function possibleFloatValues(): array
+    public static function possibleFloatValues(): array
     {
         return [
             [123, 123.0],
@@ -124,7 +125,7 @@ class SafeFloatTest extends TestCase
         ];
     }
 
-    public function impossibleFloatValues(): array
+    public static function impossibleFloatValues(): array
     {
         return [
             [['array']],
