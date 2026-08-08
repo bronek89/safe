@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "dazet/type-utils": "^0.2"
     },
     "require-dev": {
