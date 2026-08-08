@@ -23,6 +23,12 @@ final class SafeAssocArray implements SafeAccessor
         return new self($array);
     }
 
+    /** @return array<string|int, mixed> */
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
     /**
      * @return mixed
      */
