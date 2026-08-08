@@ -7,6 +7,7 @@ use function array_filter;
 use function array_map;
 use function array_values;
 use function count;
+use function is_array;
 
 final class SafeAssocList implements Countable
 {
@@ -23,11 +24,11 @@ final class SafeAssocList implements Countable
 		return new self(...$items);
 	}
 
-	/** @param array<int, array<string|int, mixed>> $items */
+	/** @param array<mixed> $items non-array items are skipped */
 	public static function fromArray(array $items): self
 	{
 		return self::from(
-			...array_map([SafeAssocArray::class, 'from'], array_values(array_filter($items, 'is_array')))
+			...array_map(SafeAssocArray::from(...), array_values(array_filter($items, is_array(...))))
 		);
 	}
 
