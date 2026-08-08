@@ -12,7 +12,7 @@ use function random_int;
 class SafeIntTest extends TestCase
 {
     #[DataProvider('possibleIntegerValues')]
-    function test_casting_possible_int_values($value, int $expected)
+    function test_casting_possible_int_values(mixed $value, int $expected): void
     {
         self::assertEquals($expected, SafeAssocArray::from(['int' => $value])->int('int'));
         self::assertEquals($expected, SafeAssocArray::from(['int' => $value])->intNullable('int'));
@@ -21,33 +21,33 @@ class SafeIntTest extends TestCase
     }
 
     #[DataProvider('impossibleIntegerValues')]
-    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int($notInt)
+    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int(mixed $notInt): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notInt])->int('value');
     }
 
     #[DataProvider('impossibleIntegerValues')]
-    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int_nullable($notInt)
+    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_int_nullable(mixed $notInt): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notInt])->intNullable('value');
     }
 
     #[DataProvider('impossibleIntegerValues')]
-    function test_intOrNull_returns_null_on_value_that_cannot_be_int($notInt)
+    function test_intOrNull_returns_null_on_value_that_cannot_be_int(mixed $notInt): void
     {
         self::assertNull(SafeAssocArray::from(['value' => $notInt])->intOrNull('value'));
     }
 
-    function test_throwing_InvalidArgumentException_on_null()
+    function test_throwing_InvalidArgumentException_on_null(): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => null])->int('value');
     }
 
     #[DataProvider('impossibleIntegerValues')]
-    function test_returning_default_when_value_is_not_numeric($notInt)
+    function test_returning_default_when_value_is_not_numeric(mixed $notInt): void
     {
         $safe = SafeAssocArray::from(['value' => $notInt]);
         $int = random_int(0, 1000000);
@@ -55,7 +55,7 @@ class SafeIntTest extends TestCase
         self::assertSame($int, $safe->intOrDefault('value', $int));
     }
 
-    function test_casts_array_of_values_that_can_be_int()
+    function test_casts_array_of_values_that_can_be_int(): void
     {
         self::assertEquals(
             [123, 1, 1, 0, 123],
@@ -73,13 +73,13 @@ class SafeIntTest extends TestCase
         );
     }
 
-    function test_throws_InvalidArgumentException_when_cannot_cast_array_of_ints()
+    function test_throws_InvalidArgumentException_when_cannot_cast_array_of_ints(): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['notOnlyInts' => ['123', new stdClass()]])->ints('notOnlyInts');
     }
 
-    function test_filtered_casting_only_ints_from_array_of_mixed_values()
+    function test_filtered_casting_only_ints_from_array_of_mixed_values(): void
     {
         self::assertEquals(
             [123, 456],
@@ -96,7 +96,7 @@ class SafeIntTest extends TestCase
         );
     }
 
-    function test_casting_array_of_mixed_values_with_default()
+    function test_casting_array_of_mixed_values_with_default(): void
     {
         $safe = SafeAssocArray::from(
             [
@@ -113,6 +113,7 @@ class SafeIntTest extends TestCase
         self::assertEquals([123, 42, 456, 42], $safe->intsForced('ints', 42));
     }
 
+    /** @return list<array{mixed, int}> */
     public static function possibleIntegerValues(): array
     {
         return [
@@ -124,6 +125,7 @@ class SafeIntTest extends TestCase
         ];
     }
 
+    /** @return list<array{mixed}> */
     public static function impossibleIntegerValues(): array
     {
         return [

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class SafeAssocListTest extends TestCase
 {
-	function test_from()
+	function test_from(): void
 	{
 		$john = SafeAssocArray::from(['name' => 'John']);
 		$mary = SafeAssocArray::from(['name' => 'Mary']);
@@ -17,7 +17,7 @@ class SafeAssocListTest extends TestCase
 		self::assertEquals([$john, $mary], $list->toArray());
 	}
 
-	function test_to_array()
+	function test_to_array(): void
 	{
 		$arrayList = SafeAssocList::fromArray([['name' => 'John'], ['name' => 'Mary']])->toArray();
 
@@ -27,12 +27,12 @@ class SafeAssocListTest extends TestCase
 		self::assertEquals('???', $arrayList[1]->string('age', '???'));
 	}
 
-	function test_count()
+	function test_count(): void
 	{
 		self::assertCount(3, SafeAssocList::fromArray([[], [], []]));
 	}
 
-	function test_filter()
+	function test_filter(): void
 	{
 		$list = SafeAssocList::fromArray(
 			[
@@ -45,7 +45,7 @@ class SafeAssocListTest extends TestCase
 		self::assertCount(2, $list);
 	}
 
-	function test_map()
+	function test_map(): void
 	{
 		$names = SafeAssocList::fromArray(
 			[

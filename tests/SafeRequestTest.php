@@ -12,56 +12,56 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class SafeRequestTest extends TestCase
 {
-    public function test_mustBeFrom_throws_on_null()
+    public function test_mustBeFrom_throws_on_null(): void
     {
         $this->expectException(LogicException::class);
         SafeRequest::mustBeFrom(null);
     }
 
-    public function test_mustBeFrom_returns_instance()
+    public function test_mustBeFrom_returns_instance(): void
     {
         $request = new Request();
         self::assertInstanceOf(SafeRequest::class, SafeRequest::mustBeFrom($request));
     }
 
-    public function test_request_returns_original_request()
+    public function test_request_returns_original_request(): void
     {
         $request = new Request();
         self::assertSame($request, SafeRequest::from($request)->request());
     }
 
-    public function test_ip()
+    public function test_ip(): void
     {
         $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.2.3.4']);
         self::assertSame('1.2.3.4', SafeRequest::from($request)->ip());
     }
 
-    public function test_ip_throws_when_not_set()
+    public function test_ip_throws_when_not_set(): void
     {
         $request = new Request();
         $this->expectException(LogicException::class);
         SafeRequest::from($request)->ip();
     }
 
-    public function test_ipElse_returns_ip_when_set()
+    public function test_ipElse_returns_ip_when_set(): void
     {
         $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '1.2.3.4']);
         self::assertSame('1.2.3.4', SafeRequest::from($request)->ipElse('fallback'));
     }
 
-    public function test_ipElse_returns_default_when_not_set()
+    public function test_ipElse_returns_default_when_not_set(): void
     {
         $request = new Request();
         self::assertSame('fallback', SafeRequest::from($request)->ipElse('fallback'));
     }
 
-    public function test_ipElse_default_is_unknown()
+    public function test_ipElse_default_is_unknown(): void
     {
         $request = new Request();
         self::assertSame('unknown', SafeRequest::from($request)->ipElse());
     }
 
-    public function test_session()
+    public function test_session(): void
     {
         $request = new Request();
         $session = new Session(new MockArraySessionStorage());
@@ -70,7 +70,7 @@ class SafeRequestTest extends TestCase
         self::assertSame($session, SafeRequest::from($request)->session());
     }
 
-    public function test_value()
+    public function test_value(): void
     {
         $request = new Request(
             ['query_param' => 'from_query', 'shared' => 'from_query'],
@@ -86,13 +86,13 @@ class SafeRequestTest extends TestCase
         self::assertEquals('default', $safeRequest->value('missing', 'default'));
     }
 
-    public function test_value_returns_null_when_key_exists_with_null_value()
+    public function test_value_returns_null_when_key_exists_with_null_value(): void
     {
         $request = new Request(['param' => null]);
         self::assertNull(SafeRequest::from($request)->value('param', 'default'));
     }
 
-    public function test_from()
+    public function test_from(): void
     {
         $request = new Request(
             ['query_param' => 1, 'query_array_param' => ['x' => 5]],

@@ -13,7 +13,7 @@ use function uniqid;
 class SafeStringTest extends TestCase
 {
     #[DataProvider('possibleStringValues')]
-    function test_casts_possible_string_values($value, string $expected)
+    function test_casts_possible_string_values(mixed $value, string $expected): void
     {
         self::assertEquals($expected, SafeAssocArray::from(['string' => $value])->string('string'));
         self::assertEquals($expected, SafeAssocArray::from(['string' => $value])->stringNullable('string'));
@@ -22,33 +22,33 @@ class SafeStringTest extends TestCase
     }
 
     #[DataProvider('impossibleStringValues')]
-    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_string($notString)
+    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_string(mixed $notString): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notString])->string('value');
     }
 
     #[DataProvider('impossibleStringValues')]
-    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_stringNullable($notString)
+    function test_throwing_InvalidArgumentException_on_value_that_cannot_be_stringNullable(mixed $notString): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => $notString])->stringNullable('value');
     }
 
     #[DataProvider('impossibleStringValues')]
-    function test_stringOrNull_returns_null_on_value_that_cannot_be_string($notString)
+    function test_stringOrNull_returns_null_on_value_that_cannot_be_string(mixed $notString): void
     {
         self::assertNull(SafeAssocArray::from(['value' => $notString])->stringOrNull('value'));
     }
 
-    function test_throwing_InvalidArgumentException_on_null()
+    function test_throwing_InvalidArgumentException_on_null(): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['value' => null])->string('value');
     }
 
     #[DataProvider('impossibleStringValues')]
-    function test_returning_default_when_value_is_not_string_like($notString)
+    function test_returning_default_when_value_is_not_string_like(mixed $notString): void
     {
         $safe = SafeAssocArray::from(['value' => $notString]);
         $string = uniqid();
@@ -56,7 +56,7 @@ class SafeStringTest extends TestCase
         self::assertSame($string, $safe->stringOrDefault('value', $string));
     }
 
-    function test_casts_array_of_values_that_can_be_string()
+    function test_casts_array_of_values_that_can_be_string(): void
     {
         self::assertEquals(
             ['John', '123', '1.23', '1', '0', 'kind of string'],
@@ -75,13 +75,13 @@ class SafeStringTest extends TestCase
         );
     }
 
-    function test_throws_InvalidArgumentException_when_cannot_cast_array_of_strings()
+    function test_throws_InvalidArgumentException_when_cannot_cast_array_of_strings(): void
     {
         $this->expectException(InvalidArgumentException::class);
         SafeAssocArray::from(['notOnlyStrings' => ['John', new stdClass()]])->strings('notOnlyStrings');
     }
 
-    function test_filtered_casting_only_strings_from_array_of_mixed_values()
+    function test_filtered_casting_only_strings_from_array_of_mixed_values(): void
     {
         self::assertEquals(
             ['John', 'kind of string'],
@@ -98,7 +98,7 @@ class SafeStringTest extends TestCase
         );
     }
 
-    function test_casting_array_of_mixed_values_with_provided_default()
+    function test_casting_array_of_mixed_values_with_provided_default(): void
     {
         $safe = SafeAssocArray::from(
             [
@@ -122,6 +122,7 @@ class SafeStringTest extends TestCase
         );
     }
 
+    /** @return list<array{mixed, string}> */
     public static function possibleStringValues(): array
     {
         return [
@@ -134,6 +135,7 @@ class SafeStringTest extends TestCase
         ];
     }
 
+    /** @return list<array{mixed}> */
     public static function impossibleStringValues(): array
     {
         return [
