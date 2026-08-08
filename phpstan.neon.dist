@@ -1,6 +1,17 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
 parameters:
-    level: 9
+    level: 10
     treatPhpDocTypesAsCertain: false
     paths:
         - src
         - tests
+    ignoreErrors:
+        # Reading an arbitrary named property off an arbitrary object, guarded
+        # by property_exists(), is what SafeObject exists to do.
+        -
+            identifier: property.dynamicName
+            path: src/SafeObject.php
+            count: 1
