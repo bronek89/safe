@@ -23,7 +23,7 @@ final class SafeAssocList implements Countable
 		return new self(...$items);
 	}
 
-	/** @param array<int, array<string|int, mixed>> $items */
+	/** @param array<mixed> $items non-array items are skipped */
 	public static function fromArray(array $items): self
 	{
 		return self::from(
