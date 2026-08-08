@@ -68,34 +68,34 @@ Mainly for Symfony.
 * casts value to `float` if possible 
 * or returns default
 
-#### `strings(string $key): array<int, string>`
+#### `strings(string $key): list<string>`
 * casts value to array of strings if possible
 * or throws `InvalidArgumentException` when some item cannot be casted
 
-#### `stringsFiltered(string $key): array<int, string>`
+#### `stringsFiltered(string $key): list<string>`
 * casts value to array of strings skipping items that cannot be casted
 
-#### `stringsForced(string $key, string $default = ''): array<int, string>`
+#### `stringsForced(string $key, string $default = ''): list<string>`
 * casts value to array of strings replacing with default items that cannot be casted
 
-#### `ints(string $key): array<int, int>`
+#### `ints(string $key): list<int>`
 * casts value to array of ints if possible
 * or throws `InvalidArgumentException` when some item cannot be casted
 
-#### `intsFiltered(string $key): array<int, int>`
+#### `intsFiltered(string $key): list<int>`
 * casts value to array of ints skipping items that cannot be casted
 
-#### `intsForced(string $key, int $default = ''): array<int, int>`
+#### `intsForced(string $key, int $default = ''): list<int>`
 * casts value to array of ints replacing with default items that cannot be casted
 
-#### `floats(string $key): array<int, float>`
+#### `floats(string $key): list<float>`
 * casts value to array of floats if possible
 * or throws `InvalidArgumentException` when some item cannot be casted
 
-#### `floatsFiltered(string $key): array<int, float>`
+#### `floatsFiltered(string $key): list<float>`
 * casts value to array of floats skipping items that cannot be casted
 
-#### `floatsForced(string $key, float $default = ''): array<int, float>`
+#### `floatsForced(string $key, float $default = ''): list<float>`
 * casts value to array of floats replacing with default items that cannot be casted
 
 #### `array(string $key): SafeAssocArray`
