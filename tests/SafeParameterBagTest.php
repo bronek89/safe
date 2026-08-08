@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\InputBag;
 
 class SafeParameterBagTest extends TestCase
 {
-    public function test_InputBag()
+    public function test_InputBag(): void
     {
         $safeBag = SafeParameterBag::from(new InputBag(['test' => 1, 'array' => ['abc' => 'def']]));
 

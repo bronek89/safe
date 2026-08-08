@@ -8,14 +8,16 @@ final class SafeAssocArray implements SafeAccessor
 {
     use SafeAccessorTrait;
 
-    /** @var array<string, mixed> */
+    /** @var array<string|int, mixed> */
     private array $array;
 
+    /** @param array<string|int, mixed> $array */
     private function __construct(array $array)
     {
         $this->array = $array;
     }
 
+    /** @param array<string|int, mixed> $array */
     public static function from(array $array): self
     {
         return new self($array);
