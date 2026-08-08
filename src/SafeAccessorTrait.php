@@ -20,6 +20,12 @@ trait SafeAccessorTrait
      */
     abstract public function value(string $key, $default);
 
+    /** Tells whether the key holds a value, treating null as absent. */
+    public function has(string $key): bool
+    {
+        return $this->value($key, null) !== null;
+    }
+
     public function bool(string $key, bool $default = false): bool
     {
         $value = BooleanUtil::toBoolOrNull($this->value($key, $default));
@@ -225,6 +231,20 @@ trait SafeAccessorTrait
         }
 
         return SafeAssocArray::from($value);
+    }
+
+    /**
+     * Raw array without the SafeAssocArray wrapper, for cases where the array
+     * is passed on rather than read through. Non-array values yield the default.
+     *
+     * @param array<string|int, mixed> $default
+     * @return array<string|int, mixed>
+     */
+    public function rawArray(string $key, array $default = []): array
+    {
+        $value = $this->value($key, null);
+
+        return is_array($value) ? $value : $default;
     }
 
 	public function list(string $key): SafeAssocList

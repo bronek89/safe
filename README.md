@@ -102,9 +102,16 @@ Mainly for Symfony.
 * casts value to associative array and wraps with `SafeAssocArray`
 * or throws `InvalidArgumentException` when value cannot be casted
 
+#### `rawArray(string $key, array $default = []): array<string|int, mixed>`
+* returns the value unwrapped when it is an array, for passing it on rather than reading through it
+* or returns default when the value is missing or not an array
+
 #### `list(string $key): SafeAssocList`
 * casts value to list of associative arrays and wraps with `SafeAssocList`
 * or throws `InvalidArgumentException` when value cannot be casted
+
+#### `has(string $key): bool`
+* tells whether the key holds a value, treating `null` as absent
 
 ## Accessors
 
@@ -127,6 +134,13 @@ $safe->string('nickname');         // InvalidArgumentException
 
 $safe->strings('sports');          // ['football', 'handball']
 $safe->ints('sports');             // InvalidArgumentException
+
+$safe->has('name');                // TRUE
+$safe->has('nickname');            // FALSE
+
+$safe->rawArray('sports');         // ['football', 'handball']
+$safe->rawArray('name', ['--']);   // ['--'] — not an array, so default
+$safe->toArray();                  // the whole $user array
 
 ```
 
